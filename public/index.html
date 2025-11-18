@@ -1,0 +1,312 @@
+<!doctype html>
+<head>
+  <title>TrackMyRent — Управляйте арендой легко</title>
+  <style>
+:root {--bg: #f6f8fb;--accent: #2563eb;--accent2: #0a84ff;--card: #fff;--shadow: 0 4px 12px rgba(0,0,0,0.08);--radius: 10px;font-family: "Inter", system-ui, sans-serif;color: #111;}
+body {background: var(--bg);margin: 0;animation: fadeIn 0.7s ease;}
+@keyframes fadeIn {from { opacity: 0; transform: translateY(10px); }to { opacity: 1; transform: translateY(0); }}
+.site-header {background: linear-gradient(90deg, var(--accent), var(--accent2));color: white;border-bottom: none;position: sticky; top: 0; z-index: 100;box-shadow: var(--shadow);animation: slideDown 0.6s ease;}
+@keyframes slideDown {from { transform: translateY(-40px); opacity: 0; }to { transform: translateY(0); opacity: 1; }}
+.header-inner {display: flex; align-items: center; justify-content: space-between;padding: 12px 20px;}
+.logo-box {display: flex; align-items: center; gap: 10px;}
+.logo {width: 50px; height: 50px; object-fit: contain; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.3));}
+h1 {margin: 0; font-size: 22px;}
+.btn {background: var(--accent);border: none;color: white;padding: 8px 14px;border-radius: 6px;cursor: pointer;transition: all 0.25s ease;box-shadow: 0 2px 6px rgba(37,99,235,0.3);}
+.btn:hover {transform: translateY(-2px) scale(1.03);box-shadow: 0 4px 12px rgba(37,99,235,0.4);}
+.btn.ghost {background: transparent;border: 1px solid var(--accent);color: var(--accent);box-shadow: none;}
+.btn.ghost:hover {background: var(--accent);color: white;transform: translateY(-2px);}
+.btn.large {padding: 10px 20px; font-size: 16px;}
+.btn.small {padding: 6px 10px; font-size: 14px;}
+#get-started {animation: pulse 2s infinite;}
+@keyframes pulse {0%, 100% { box-shadow: 0 0 0 0 rgba(37,99,235,0.4); }50% { box-shadow: 0 0 12px 4px rgba(37,99,235,0.25); }}
+.container {max-width: 900px; margin: auto; padding: 20px;}
+.hero {text-align: center; margin-top: 40px; animation: fadeIn 1s ease;}
+.info-section {text-align: center; margin-top: 40px;}
+.info-cards {display: grid;grid-template-columns: repeat(auto-fit, minmax(250px,1fr));gap: 16px;margin-top: 20px;}
+.info-card {background: var(--card);border-radius: var(--radius);padding: 16px;box-shadow: var(--shadow);transition: transform 0.3s ease, box-shadow 0.3s ease;animation: fadeIn 1s ease;}
+.info-card:hover {transform: translateY(-6px);box-shadow: 0 6px 20px rgba(0,0,0,0.12);}
+.faq-section {margin-top: 40px; animation: fadeIn 1s ease;}
+details {background: white;border-radius: 8px;box-shadow: 0 1px 2px rgba(0,0,0,0.05);margin-bottom: 10px;padding: 12px 16px;transition: all 0.3s;overflow: hidden;}
+summary {cursor: pointer;font-weight: 600;color: var(--accent);display: flex;justify-content: space-between;align-items: center;list-style: none;}
+summary::after {content: "▼";font-size: 12px;color: var(--accent);transition: transform 0.3s;}
+details[open] summary::after {transform: rotate(180deg);}
+details p {margin-top: 8px;color: #374151;animation: fadeOpen 0.4s ease;}
+@keyframes fadeOpen {from {opacity: 0; transform: translateY(-5px);}to {opacity: 1; transform: translateY(0);}}
+details:hover {background: #f0f7ff;}
+.modal {position: fixed;inset: 0;background: rgba(0,0,0,0.4);display: flex;justify-content: center;align-items: center;animation: fadeIn 0.3s ease;}
+.modal-card {background: white;padding: 20px;border-radius: 10px;width: 300px;animation: pop 0.4s ease;}
+@keyframes pop {from {transform: scale(0.8); opacity: 0;}to {transform: scale(1); opacity: 1;}}
+footer {background: #fff;border-top: 1px solid #e5e7eb;text-align: center;padding: 20px;margin-top: 40px;animation: fadeIn 1s ease;}
+footer button {margin: 4px;}
+table {width: 100%;border-collapse: collapse;animation: fadeIn 0.5s ease;}
+th, td {padding: 8px;border-bottom: 1px solid #e5e7eb;text-align: left;}
+.card {background: white;padding: 16px;border-radius: 10px;box-shadow: var(--shadow);margin-top: 20px;animation: fadeIn 0.8s ease;}
+.status-paid {color: green; font-weight: 600;}
+.status-due {color: #dc2626; font-weight: 600;}
+.summary-box {display: flex; gap: 16px; justify-content: center;margin-bottom: 10px; padding: 8px 0;background: #f5f5f5; border-radius: 8px;font-size: 15px; animation: fadeIn 1s ease;}
+.hidden {display:none;}
+  </style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <div class="logo-box">
+        <img src="logo.png" alt="TrackMyRent" class="logo">
+        <h1>TrackMyRent</h1>
+      </div>
+      <nav>
+        <button id="btn-login" class="btn small">Войти</button>
+        <button id="btn-register" class="btn ghost small">Регистрация</button>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="hero container" style="text-align:center; margin-top:40px;">
+      <h2>Управляйте арендой и долгами легко</h2>
+      <p>TrackMyRent помогает арендодателям и жильцам удобно контролировать платежи, долги и сроки аренды.</p>
+      <button id="get-started" class="btn large">Начать</button>
+      <button class="btn ghost large">Как это работает</button>
+    </section>
+    <section class="info-section container">
+      <h3>Почему выбирают TrackMyRent?</h3>
+      <div class="info-cards">
+        <div class="info-card">
+          <h4>📊 Учет долгов</h4>
+          <p>Легко отслеживайте, кто и сколько должен. Уведомления помогают не забывать о сроках.</p>
+        </div>
+        <div class="info-card">
+          <h4>💳 Онлайн оплата</h4>
+          <p>Оплачивайте аренду или долги прямо на сайте — картой или наличными при встрече.</p>
+        </div>
+        <div class="info-card">
+          <h4>👥 Разные роли</h4>
+          <p>Арендодатели и арендаторы имеют собственные панели и функции.</p>
+        </div>
+      </div>
+    </section>
+    <section class="faq-section container">
+      <h3 style="text-align:center;">❓ Часто задаваемые вопросы</h3>
+      <details>
+        <summary>Как зарегистрироваться?</summary>
+        <p>Нажмите «Регистрация» вверху, введите логин, пароль и имя — готово!</p>
+      </details>
+      <details>
+        <summary>Можно ли оплатить наличными?</summary>
+        <p>Да! При оплате выберите способ «Наличные» и отметьте, что долг погашен вручную.</p>
+      </details>
+      <details>
+        <summary>Что делать, если я забыл пароль?</summary>
+        <p>Свяжитесь с админом, чтобы он сбросил пароль вручную (функция восстановления пока не доступна).</p>
+      </details>
+      <details>
+        <summary>Кто может добавлять долги?</summary>
+        <p>Только админ имеет право создавать и удалять долги, чтобы сохранялась честность системы.</p>
+      </details>
+      <div style="text-align:center; margin-top:20px;">
+        <button class="btn ghost small" id="faq-toggle">Показать / скрыть все</button>
+      </div>
+    </section>
+    <section class="dashboard container">
+      <div id="msg" class="hidden"></div>
+      <div id="no-user" class="card notice">
+        <p>Войдите или зарегистрируйтесь. <br><b>Админ:</b> admin / <i>adminsecret</i></p>
+      </div>
+      <div id="user-panel" class="hidden">
+        <div class="panel-top">
+          <p>👋 Привет, <b id="user-name"></b> (<span id="user-role"></span>)</p>
+          <button id="btn-logout" class="btn ghost small">Выйти</button>
+        </div>
+        <div id="admin-panel" class="card hidden">
+          <h4>Админ панель</h4>
+          <form id="add-debt-form" class="form-row">
+            <input id="debt-name" placeholder="Имя">
+            <input id="debt-id" placeholder="ID">
+            <input id="debt-date" type="date">
+            <input id="debt-amount" placeholder="Сумма (сум)" type="number" min="0">
+            <input id="debt-expire" type="date">
+            <button class="btn small">Добавить</button>
+          </form>
+        </div>
+        <div class="card">
+          <div id="summary"></div>
+          <table id="debts-table">
+            <thead>
+              <tr><th>Имя</th><th>ID</th><th>Дата</th><th>Сумма</th><th>Срок</th><th>Статус</th><th>Действие</th></tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <p>© 2025 TrackMyRent. Все права защищены.</p>
+    <button class="btn ghost small">О нас</button>
+    <button class="btn ghost small">Контакты</button>
+  </footer>
+  <div id="modal-root"></div>
+  <script>
+const $ = s => document.querySelector(s),
+      $$ = s => document.querySelectorAll(s);
+let session = null;
+let debts = [];
+const API = "http://trackmyrent.onrender.com/";
+const msg = t => {
+  const m = $('#msg');
+  m.textContent = t;
+  m.classList.remove('hidden');
+  setTimeout(() => m.classList.add('hidden'), 2000);
+};
+function updateNav() {
+  const n = document.querySelector('nav');
+  if (!session) {
+    n.innerHTML = `
+      <button id="btn-login" class="btn small">Войти</button>
+      <button id="btn-register" class="btn ghost small">Регистрация</button>`;
+    $('#btn-login').onclick = login;
+    $('#btn-register').onclick = register;
+  } else {
+    n.innerHTML = `
+      <span class="user-info">${session.name}</span>
+      <button id="btn-logout" class="btn ghost small">Выйти</button>`;
+    $('#btn-logout').onclick = () => { session = null; renderDebts(); msg('Вы вышли'); };
+  }
+}
+async function renderDebts() {
+  const tb = $('#debts-table tbody');
+  if (!tb) return;
+  tb.innerHTML = '';
+  updateNav();
+  if (!session) {
+    $('#no-user').classList.remove('hidden');
+    $('#user-panel').classList.add('hidden');
+    return;
+  }
+  $('#no-user').classList.add('hidden');
+  $('#user-panel').classList.remove('hidden');
+  $('#user-name').textContent = session.name;
+  $('#user-role').textContent = session.role;
+  $('#admin-panel').classList.toggle('hidden', session.role !== 'admin');
+  const res = await fetch(`${API}/debts?username=${session.username}&role=${session.role}`);
+  debts = await res.json();
+  if (!debts.length) {
+    tb.innerHTML = `<tr><td colspan=7>Нет долгов</td></tr>`;
+    $('#summary').innerHTML = '';
+    return;
+  }
+  tb.innerHTML = debts.map(d => `
+    <tr>
+      <td>${d.name}</td>
+      <td>${d.debt_id}</td>
+      <td>${d.date}</td>
+      <td>${Number(d.amount).toLocaleString()} сум</td>
+      <td>${d.expire}</td>
+      <td class="${d.status === 'paid' ? 'status-paid' : 'status-due'}">
+        ${d.status === 'paid' ? `оплачено (${d.method === 'cash' ? 'наличными' : 'картой'})` : 'не оплачено'}
+      </td>
+      <td>
+        ${d.status === 'due' ? `<button class="btn small pay" data-id="${d.id}">Оплатить</button>` : '—'}
+        ${session.role === 'admin' ? `<button class="btn ghost small del" data-id="${d.id}">Удалить</button>` : ''}
+      </td>
+    </tr>`).join('');
+  $$('.pay').forEach(b => b.onclick = () => payModal(debts.find(x => x.id == b.dataset.id)));
+  $$('.del').forEach(b => b.onclick = async () => {
+    await fetch(`${API}/debts/${b.dataset.id}`, { method: 'DELETE' });
+    renderDebts();
+    msg('Удалено');
+  });
+  if (session.role === 'admin') {
+    const paidCard = debts.filter(d => d.status === 'paid' && d.method === 'card').length;
+    const paidCash = debts.filter(d => d.status === 'paid' && d.method === 'cash').length;
+    const unpaid = debts.filter(d => d.status === 'due').length;
+    $('#summary').innerHTML = `
+      <div class="summary-box">
+        <span>💳 Картой: <b>${paidCard}</b></span>
+        <span>💵 Наличными: <b>${paidCash}</b></span>
+        <span>⏳ Не оплачено: <b>${unpaid}</b></span>
+      </div>`;
+  } else {
+    $('#summary').innerHTML = '';
+  }
+}
+function payModal(d) {
+  $('#modal-root').innerHTML = `
+  <div class="modal"><div class="modal-card">
+    <h3>Выберите способ оплаты — ${d.name}</h3>
+    <p><b>${Number(d.amount).toLocaleString()} сум</b></p>
+    <div style="display:flex;gap:8px;justify-content:center;margin-top:10px;">
+      <button id="pay-card" class="btn small">Картой</button>
+      <button id="pay-cash" class="btn small ghost">Наличными</button>
+    </div>
+    <div style="margin-top:10px;text-align:right;">
+      <button id="cancel" class="btn ghost small">Отмена</button>
+    </div>
+  </div></div>`;
+
+  $('#cancel').onclick = () => $('#modal-root').innerHTML = '';
+  $('#pay-card').onclick = () => payDebt(d.id, 'card');
+  $('#pay-cash').onclick = () => payDebt(d.id, 'cash');
+}
+async function payDebt(id, method) {
+  await fetch(`${API}/debts/${id}/pay`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ method })
+  });
+  $('#modal-root').innerHTML = '';
+  renderDebts();
+  msg(method === 'card' ? 'Оплата картой' : 'Оплата наличными');
+}
+async function login() {
+  const username = prompt("Логин:");
+  const password = prompt("Пароль:");
+  const res = await fetch(`${API}/login`, {
+    method: 'POST',
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password })
+  });
+  const data = await res.json();
+  if (data.error) return msg(data.error);
+  session = data;
+  renderDebts();
+  msg("Вход выполнен");
+}
+async function register() {
+  const username = prompt("Новый логин:");
+  const password = prompt("Пароль:");
+  const name = prompt("Ваше имя:");
+  if (!username || !password || !name) return msg("Введите все поля");
+  const res = await fetch(`${API}/register`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ username, password, name })
+  });
+  const data = await res.json();
+  if (data.error) return msg(data.error);
+  msg("Регистрация успешна");
+}
+$('#get-started')?.addEventListener('click', login);
+$('#faq-toggle')?.addEventListener('click', () => {
+  document.querySelectorAll('details').forEach(d => d.open = !d.open);
+});
+$('#add-debt-form')?.addEventListener('submit', async e => {
+  e.preventDefault();
+  const name = $('#debt-name').value.trim(),
+        debt_id = $('#debt-id').value.trim(),
+        date = $('#debt-date').value,
+        amount = +$('#debt-amount').value,
+        expire = $('#debt-expire').value;
+  if (!name || !debt_id || !date || !amount || !expire) return msg('Введите все данные');
+  await fetch(`${API}/debts`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, debt_id, date, amount, expire, owner: session.username })
+  });
+  e.target.reset();
+  renderDebts();
+  msg('Добавлено');
+});
+renderDebts();
+</script>
+</body>
+</html>
